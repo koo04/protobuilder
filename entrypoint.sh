@@ -1,15 +1,5 @@
 #!/bin/bash -e
 
-echo "input: ${INPUT_PATH}"
-echo "output: ${OUTPUT_PATH}"
-echo "file: ${PROTO_FILE}"
-echo "grpc api configuration: ${GRPC_API_CONFIGURATION}"
-echo "openapi configuration: ${OPENAPI_CONFIGURATION}"
-echo "gen-go: ${GEN_GO}"
-echo "gen-go-grpc: ${GEN_GO_GRPC}"
-echo "gen-grpc-gateway: ${GEN_GRPC_GATEWAY}"
-echo "gen-openapiv2: ${GEN_OPENAPIV2}"
-
 printUsage() {
     echo "protobuilder simplifies the process to generate grpc code"
     echo " "
@@ -192,6 +182,15 @@ mkdir -p ${OUTPUT_PREFIX_PATH}
 mkdir -p ${ASSET_PREFIX_PATH}
 
 if [[ $VERBOSE == true ]]; then 
+    echo "input: ${INPUT_PATH}"
+    echo "output: ${OUTPUT_PATH}"
+    echo "file: ${PROTO_FILE}"
+    echo "grpc api configuration: ${GRPC_API_CONFIGURATION}"
+    echo "openapi configuration: ${OPENAPI_CONFIGURATION}"
+    echo "gen-go: ${GEN_GO}"
+    echo "gen-go-grpc: ${GEN_GO_GRPC}"
+    echo "gen-grpc-gateway: ${GEN_GRPC_GATEWAY}"
+    echo "gen-openapiv2: ${GEN_OPENAPIV2}"
     echo "protoc -I $INPUT_PATH \
         $GEN_GO_STRING \
         $GEN_GRPC_STRING \
