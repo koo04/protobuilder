@@ -21,6 +21,7 @@ printUsage() {
     echo " --with-grpc                  Enables the output to generate the *_grpc.pb.go files"
     echo " --with-gateway               Enables the output to generate the *.pb.gw.go files"
     echo " --with-openapiv2             Enables the output to generate the *.swagger.json files"
+    echo " --shell                      Drops you into shell prompt after execution"
 }
 
 INPUT_PATH=${INPUT_PATH}
@@ -35,6 +36,7 @@ GEN_GO_GRPC=${GEN_GO_GRPC}
 GEN_GRPC_GATEWAY=${GEN_GRPC_GATEWAY}
 GEN_OPENAPIV2=${GEN_OPENAPIV2}
 VERBOSE=false
+SHELL=false
 
 while test $# -gt 0; do
     case "$1" in
@@ -132,6 +134,10 @@ while test $# -gt 0; do
             fi
             shift
             ;;
+        --shell) 
+            SHELL=true
+            shift
+
     esac
 done
 
@@ -191,6 +197,7 @@ if [[ $VERBOSE == true ]]; then
     echo "gen-go-grpc: ${GEN_GO_GRPC}"
     echo "gen-grpc-gateway: ${GEN_GRPC_GATEWAY}"
     echo "gen-openapiv2: ${GEN_OPENAPIV2}"
+    echo "shell: ${SHELL}" 
     echo "protoc -I $INPUT_PATH \
         $GEN_GO_STRING \
         $GEN_GRPC_STRING \
@@ -206,3 +213,7 @@ protoc -I $INPUT_PATH \
     $GEN_GATEWAY_STRING \
     $GEN_OPENAPIV2_STRING \
     $PROTO_FILE
+
+if [[ $SHELL == true ]]; then
+    /bin/bash
+fi
