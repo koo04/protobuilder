@@ -178,8 +178,8 @@ fi
 # Enter the working directory
 cd /app
 
-mkdir -p ${OUTPUT_PREFIX_PATH}
-mkdir -p ${ASSET_PREFIX_PATH}
+mkdir -p ${OUTPUT_PATH}${OUTPUT_PREFIX_PATH}
+mkdir -p ${OUTPUT_PATH}${ASSET_PREFIX_PATH}
 
 if [[ $VERBOSE == true ]]; then 
     echo "input: ${INPUT_PATH}"
