@@ -187,7 +187,7 @@ cd /app
 mkdir -p ${OUTPUT_PATH}${OUTPUT_PREFIX_PATH}
 mkdir -p ${OUTPUT_PATH}${ASSET_PREFIX_PATH}
 
-if [[ $VERBOSE == true ]]; then 
+if [[ $VERBOSE == true ]]; then
     echo "input: ${INPUT_PATH}"
     echo "output: ${OUTPUT_PATH}"
     echo "file: ${PROTO_FILE}"
@@ -198,11 +198,11 @@ if [[ $VERBOSE == true ]]; then
     echo "gen-grpc-gateway: ${GEN_GRPC_GATEWAY}"
     echo "gen-openapiv2: ${GEN_OPENAPIV2}"
     echo "shell: ${SHELL}" 
-    echo "protoc -I $INPUT_PATH \
-        $GEN_GO_STRING \
-        $GEN_GRPC_STRING \
-        $GEN_GATEWAY_STRING \
-        $GEN_OPENAPIV2_STRING \
+    printf "protoc -I $INPUT_PATH \n\
+        $GEN_GO_STRING \n\
+        $GEN_GRPC_STRING \n\
+        $GEN_GATEWAY_STRING \n\
+        $GEN_OPENAPIV2_STRING \n\
         $PROTO_FILE"
 fi
 
@@ -213,6 +213,8 @@ protoc -I $INPUT_PATH \
     $GEN_GATEWAY_STRING \
     $GEN_OPENAPIV2_STRING \
     $PROTO_FILE
+
+echo "Completed $PROTO_FILE"
 
 if [[ $SHELL == true ]]; then
     /bin/bash
