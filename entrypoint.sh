@@ -134,6 +134,16 @@ while test $# -gt 0; do
             fi
             shift
             ;;
+        --package-maps)
+            shift
+            if test $# -gt 0; then
+                PACKAGE_MAPS=$1
+            else
+                echo "no package specified"
+                exit 1
+            fi
+            shift
+            ;;
         --shell) 
             SHELL=true
             shift
@@ -181,6 +191,30 @@ if [[ $GEN_OPENAPIV2 == true ]]; then
     GEN_OPENAPIV2_STRING="--openapiv2_out ${OUTPUT_PATH}${ASSET_PREFIX_PATH} --openapiv2_opt logtostderr=true --openapiv2_opt use_go_templates=true --openapiv2_opt grpc_api_configuration=$GRPC_API_CONFIGURATION --openapiv2_opt openapi_configuration=$OPENAPI_CONFIGURATION"
 fi
 
+GEN_PACKAGE_STRING=''
+if [[ $PACKAGE_MAPS ]]; then
+    readarray -d , -t package_maps <<< "$PACKAGE_MAPS"
+    for package_map in "${package_maps[@]}"; do
+    
+        if [[ $GEN_GO == true ]]; then
+            GEN_PACKAGE_STRING="$GEN_PACKAGE_STRING --go_opt M$package_map"
+        fi
+
+        if [[ $GEN_GO_GRPC == true ]]; then
+            GEN_PACKAGE_STRING="$GEN_PACKAGE_STRING --go-grpc_opt M$package_map"
+        fi
+
+        if [[ $GEN_GRPC_GATEWAY == true ]]; then
+            GEN_PACKAGE_STRING="$GEN_PACKAGE_STRING --grpc-gateway_opt M$package_map"
+        fi
+        
+        if [[ $GEN_OPENAPIV2 == true ]]; then
+            GEN_PACKAGE_STRING="$GEN_PACKAGE_STRING --openapiv2_opt M$package_map"
+        fi
+        
+    done
+fi
+
 # Enter the working directory
 cd /app
 
@@ -203,7 +237,8 @@ if [[ $VERBOSE == true ]]; then
         $GEN_GRPC_STRING \n\
         $GEN_GATEWAY_STRING \n\
         $GEN_OPENAPIV2_STRING \n\
-        $PROTO_FILE"
+        $GEN_PACKAGE_STRING \n\
+        $PROTO_FILE\n"
 fi
 
 # run protoc
@@ -212,6 +247,7 @@ protoc -I $INPUT_PATH \
     $GEN_GRPC_STRING \
     $GEN_GATEWAY_STRING \
     $GEN_OPENAPIV2_STRING \
+    $GEN_PACKAGE_STRING \
     $PROTO_FILE
 
 echo "Completed $PROTO_FILE"
