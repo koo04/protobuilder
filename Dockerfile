@@ -10,7 +10,6 @@ ENV GO111MODULE=auto
 ARG PROTOC_VERSION=3.19.4
 ARG GEN_GO_GRPC_VERSION=1.0.0
 ARG GEN_GRPC_GATEWAY_VERSION=2.7.3
-ARG GEN_GRPC_GATEWAY_LEGACY=1.16.0
 ARG GEN_GO_VERSION=1.27.1
 
 WORKDIR /go
@@ -33,6 +32,9 @@ RUN set -e && \
 
 RUN set -e && \
     go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@v${GEN_GRPC_GATEWAY_VERSION}
+
+RUN set -e && \
+    go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@v${GEN_GRPC_GATEWAY_VERSION}
 
 ADD ./entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
